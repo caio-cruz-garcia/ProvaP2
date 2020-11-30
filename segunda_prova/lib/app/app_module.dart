@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:segunda_prova/app/custom_dio/custom_dio.dart';
 import 'package:segunda_prova/app/pages/splashScreen/splash_screen_page.dart';
 
@@ -13,7 +14,7 @@ class AppModule extends MainModule {
   List<Bind> get binds => [
         $SplashScreenController,
         $AppController,
-        Bind((i) => CustomDio()),
+        Bind((i) => Dio()),
       ];
 
   @override

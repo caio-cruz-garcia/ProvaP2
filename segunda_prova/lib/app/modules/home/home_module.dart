@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:segunda_prova/app/app_module.dart';
 import 'package:segunda_prova/app/custom_dio/custom_dio.dart';
 import 'package:segunda_prova/app/modules/home/home_repository.dart';
@@ -11,7 +12,7 @@ class HomeModule extends ChildModule {
   @override
   List<Bind> get binds => [
         $HomeController,
-        Bind((i) => HomeRepository(AppModule.to.get<CustomDio>())),
+        Bind((i) => HomeRepository(i.get<Dio>())),
       ];
 
   @override
