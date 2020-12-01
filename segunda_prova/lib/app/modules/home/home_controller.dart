@@ -12,7 +12,9 @@ class HomeController = _HomeControllerBase with _$HomeController;
 abstract class _HomeControllerBase with Store {
   final HomeRepository repository;
 
-  _HomeControllerBase(this.repository);
+  _HomeControllerBase(this.repository){
+    fetchPosts();
+  }
 
   @observable
   HomeStatus status = HomeStatus.none;
@@ -22,7 +24,7 @@ abstract class _HomeControllerBase with Store {
     status = HomeStatus.loading;
     try {
       final response = await repository.fetchPosts();
-      status = HomeStatus.sucess..value = response;
+      status = HomeStatus.success..value = response;
     } catch (e) {
       status = HomeStatus.error..value = e;
     }

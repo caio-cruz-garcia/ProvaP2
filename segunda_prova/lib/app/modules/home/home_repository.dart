@@ -14,6 +14,12 @@ class HomeRepository {
         .toList();
   }
 
+  Future createPost(Map<String,dynamic> data) async {
+    final response =
+    await _client.post('https://jsonplaceholder.typicode.com/posts',data: data);
+        return response.statusCode;
+  }
+
   @override
   void dispose() {}
 }

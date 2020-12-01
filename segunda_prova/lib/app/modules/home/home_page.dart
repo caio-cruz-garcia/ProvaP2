@@ -26,7 +26,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         body: Observer(builder: (_) {
           if (controller.status == HomeStatus.loading) {
             return CircularProgressIndicator();
-          } else if (controller.status == HomeStatus.sucess) {
+          } else if (controller.status == HomeStatus.success) {
             final list = controller.status.value as List<placeholderModel>;
             if (list.isNotEmpty) {
               return ListView.builder(

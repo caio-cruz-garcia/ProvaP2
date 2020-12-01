@@ -1,7 +1,7 @@
-enum HomeStatus { loading, sucess, error, none }
+enum HomeStatus { loading, success, error, none }
 
 extension HomeStatusExt on HomeStatus{
   static var _value;
-  get value => value;
-  set value(value) => value = value;
+  get value => _value;
+  set value(value) => _value = value;
 }
