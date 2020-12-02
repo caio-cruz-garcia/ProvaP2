@@ -6,7 +6,9 @@ import 'package:segunda_prova/app/modules/home/home_repository.dart';
 class  CreateRepository {
   final HomeRepository repository;
 
-  CreateRepository(this.repository)
+  CreateRepository(this.repository){
+    responseOut = post.switchMap(observablePost);
+  }
 
   String title;
   String body;
@@ -15,17 +17,21 @@ class  CreateRepository {
 
 
   placeholderModel get postValue => post.value;
-  Observable get responseOut => post.switchMap(observablePost);
+  Observable<int> responseOut;
   Sink<placeholderModel> get PostIn => post.sink;
 
-  Stream observablePost(placeholderModel data) async*{
+  Stream<int> observablePost(placeholderModel data) async*{
     yield 0;
-    final response = await repository.createPost(data.toJson());
-    yield response;
+    try{
+      var response = await repository.createPost(data.toJson());
+      yield response;
+    }catch(e){
+      throw (e);
+    }
   }
 
   @override
-  void dispose(){
+  void dispose() {
     post.close();
     super.dispose();
   }

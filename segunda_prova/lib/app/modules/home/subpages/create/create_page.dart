@@ -14,8 +14,7 @@ class CreatePage extends StatefulWidget{
   const CreatePage({Key key, this.onSuccess}) : super(key: key);
 
   @override
-  _CreatePageState createPage() => _CreatePageState();
-
+  _CreatePageState createState() => _CreatePageState();
 
 }
 
@@ -24,25 +23,22 @@ class _CreatePageState extends State<CreatePage>{
 
   Controller controller;
 
-  StreamSubscription listenResponse;
-
   @override
   void didChangeDependencies(){
     controller = Controller();
-    listenResponse = binds.responseOut.listen((data){
-      if(data == 201){
-        Timer(Duration(seconds: 1), () {
-          widget.onSuccess();
-          Navigator.pop(context);
-        });
-      }
-    });
+    // listenResponse = binds.responseOut.listen((data){
+    //   if(data == 201){
+    //     Timer(Duration(seconds: 1), () {
+    //       widget.onSuccess();
+    //       Navigator.pop(context);
+    //     });
+    //   }
+    // });
     super.didChangeDependencies();
   }
 
   @override
   void dispose(){
-    listenResponse.cancel();
     super.dispose();
   }
 
@@ -53,7 +49,7 @@ class _CreatePageState extends State<CreatePage>{
         title: Text("Create Post"),
         centerTitle: true,
       ),
-      body: StreamBuilder<Int>(
+      body: StreamBuilder<int>(
         stream: binds.responseOut,
         builder: (context, snapshot){
           if(snapshot.hasError) return Center(child: Text("${snapshot.error}",style: TextStyle(fontSize: 25),));
@@ -63,8 +59,13 @@ class _CreatePageState extends State<CreatePage>{
               return Center(
                 child: CircularProgressIndicator(),
               );
-            }else
+            }else{
+              Timer(Duration(seconds: 1), (){
+                Navigator.pop(context);
+              });
               return Center(child: Text("Inserido com sucesso!",style: TextStyle(fontSize: 25),));
+            }
+              
           }else{
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
