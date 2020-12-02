@@ -1,131 +1,54 @@
 
-import 'dart:async';
-import 'dart:html';
-
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:segunda_prova/app/models/placeholderModel.dart';
-import 'package:segunda_prova/app/modules/home/home_module.dart';
-import 'package:segunda_prova/app/modules/home/subpages/create/create_repository.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
-class CreatePage extends StatefulWidget{
-  final Function onSuccess;
+import 'package:mobx/mobx.dart';
+import 'create_controller.dart';
 
-  const CreatePage({Key key, this.onSuccess}) : super(key: key);
+class CreatePage extends StatefulWidget {
+  final String title;
+  const CreatePage({Key key, this.title = "Create"}) : super(key: key);
 
   @override
   _CreatePageState createState() => _CreatePageState();
-
 }
 
-class _CreatePageState extends State<CreatePage>{
-  var binds = HomeModule.to.get<CreateRepository>();
-
-  Controller controller;
+class _CreatePageState extends ModularState<CreatePage, CreateController> {
+  //use 'controller' variable to access controller
 
   @override
-  void didChangeDependencies(){
-    controller = Controller();
-    // listenResponse = binds.responseOut.listen((data){
-    //   if(data == 201){
-    //     Timer(Duration(seconds: 1), () {
-    //       widget.onSuccess();
-    //       Navigator.pop(context);
-    //     });
-    //   }
-    // });
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose(){
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Create Post"),
-        centerTitle: true,
-      ),
-      body: StreamBuilder<int>(
-        stream: binds.responseOut,
-        builder: (context, snapshot){
-          if(snapshot.hasError) return Center(child: Text("${snapshot.error}",style: TextStyle(fontSize: 25),));
-
-          if(snapshot.hasData){
-            if(snapshot.data == 0){
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }else{
-              Timer(Duration(seconds: 1), (){
-                Navigator.pop(context);
-              });
-              return Center(child: Text("Inserido com sucesso!",style: TextStyle(fontSize: 25),));
-            }
-              
-          }else{
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: Form(
-                      key: controller.formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        TextFormField(
-                          onSaved: (value) => binds.title = value,
-                          validator: (value) => value.isEmpty ? "O titulo não pode ser nulo" : null,
-                          decoration: InputDecoration(labelText: "Title"),
-                        ),
-                        TextFormField(
-                          onSaved: (value) => binds.title = value,
-                          validator: (value) => value.isEmpty ? "O titulo não pode ser nulo" : null,
-                          maxLines: 3,
-                          decoration: InputDecoration(labelText: "Body"),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.only(top: 32),
-                  child: RaisedButton(
-                    color: Colors.blue,
-                    child: Text(
-                        "Enviar",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: (){
-                      if(controller.validade()){
-                        binds.PostIn.add(placeholderModel(
-                          body: binds.body, title: binds.title, userId: 1));
-                      }
-                    },
-                  ),
-                )
-              ],
-            );
-          }
-        }),
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+         body: Container(
+           child:  Column(
+             children: [
+               Observer(builder: (_){
+                 return TextFormField(onChanged: controller.changeTitle,
+                 decoration: const InputDecoration(
+                   hintText: 'Write something',
+                   labelText: 'Title'
+                 ),
+                 );
+             }),
+               Observer(builder:(_){
+                 return TextFormField(onChanged: controller.changeBody,
+                 decoration:  const InputDecoration(
+                   hintText: 'Write something',
+                   labelText: 'Body'
+                 ),
+                 );
+             }),
+               RaisedButton(onPressed: controller.CreatePosts,
+               child: Text('Adicionar', style: TextStyle(fontSize: 20),)
+               )
+             ],
+           ),
+         )
     );
-  }
-
-}
-
-class Controller {
-  var formKey = GlobalKey<FormState>();
-
-  bool validade(){
-    var form = formKey.currentState;
-    if(form.validate()){
-      form.save();
-      return true;
-    }else
-      return false;
   }
 }

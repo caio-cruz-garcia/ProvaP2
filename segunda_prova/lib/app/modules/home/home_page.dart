@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:mobx/mobx.dart';
 import 'package:segunda_prova/app/models/placeholderModel.dart';
+import 'package:segunda_prova/app/modules/home/subpages/create/create_module.dart';
 import 'home_controller.dart';
 import 'home_status.dart';
 
@@ -22,6 +22,15 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Adicionar",
+                  style: TextStyle(color: Colors.white, fontSize: 15)),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/create');
+              },
+            )
+          ],
         ),
         body: Observer(builder: (_) {
           if (controller.status == HomeStatus.loading) {

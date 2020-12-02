@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:segunda_prova/app/custom_dio/custom_dio.dart';
 import 'package:segunda_prova/app/pages/splashScreen/splash_screen_page.dart';
 
+import 'modules/home/subpages/create/create_module.dart';
 import 'pages/splashScreen/splash_screen_controller.dart';
 import 'app_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -23,6 +24,7 @@ class AppModule extends MainModule {
         _,arges0
         ) => SplashScreenPage()),
         ModularRouter('/home', module: HomeModule()),
+        ModularRouter('/create', module: CreateModule()),
       ];
 
 

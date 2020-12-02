@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:segunda_prova/app/app_module.dart';
 import 'package:segunda_prova/app/custom_dio/custom_dio.dart';
 import 'package:segunda_prova/app/modules/home/home_repository.dart';
-import 'package:segunda_prova/app/modules/home/subpages/create/create_repository.dart';
+
 
 import 'home_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -14,7 +14,7 @@ class HomeModule extends ChildModule {
   List<Bind> get binds => [
         $HomeController,
         Bind((i) => HomeRepository(i.get<Dio>())),
-        Bind((i) => CreateRepository(i.get<HomeRepository>()),singleton: false),
+
       ];
 
   @override
